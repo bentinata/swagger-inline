@@ -60,7 +60,7 @@ class Loader {
       });
   }
 
-  static loadBase(base = '', options) {
+  static loadBase(base = {}, options) {
     return fs
       .stat(base)
       .then(stat => {
@@ -73,8 +73,8 @@ class Loader {
         return this.findSwagger(process.cwd(), options).catch(err => Promise.reject(err));
       })
       .catch(() => {
-        // Return an empty object if we have any problems.
-        return {};
+        // Try to return passed base Object instead.
+        return base;
       });
   }
 
