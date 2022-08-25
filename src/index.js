@@ -7,10 +7,15 @@ const Loader = require('./loader');
 const Options = require('./options');
 
 function outputResult(object, options) {
-  return new Promise(resolve => {
-    const result = options.isJSON() ? JSON.stringify(object, null, 2) : jsYaml.dump(object);
-    resolve(result);
-  });
+  if (options.isJSON()) {
+    return JSON.stringify(object, null, 2);
+  }
+  
+  if (options.getFormat().match(/\.?ya?ml/)) {
+    return jsYaml.dump(object);
+  }
+
+  return object;
 }
 
 function sortObj(obj, compare) {
